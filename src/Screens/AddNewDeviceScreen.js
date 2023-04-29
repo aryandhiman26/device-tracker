@@ -26,7 +26,7 @@ const AddNewDeviceScreen = ({navigation, route}) => {
   const [loading, setLoading] = useState(false);
 
   const handleSubmitButton = async () => {
-    if (emailId.length < 1) {
+    if (userInfo?.typ === 'admin' && emailId.length < 1) {
       ToastAndroid.show('User ID/ Email ID is required', ToastAndroid.SHORT);
       return;
     }

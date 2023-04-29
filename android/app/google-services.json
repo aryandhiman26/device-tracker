@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "415039696789",
+    "project_id": "devicetracker-44c14",
+    "storage_bucket": "devicetracker-44c14.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:415039696789:android:dcf9523057100dde27909c",
+        "android_client_info": {
+          "package_name": "com.devicetracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "415039696789-2b9lm05u02er58q5fk0b92th8atruqj3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeIqwPCJRoTVeDSeBdTjyqw35ZFfh6YWE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "415039696789-2b9lm05u02er58q5fk0b92th8atruqj3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

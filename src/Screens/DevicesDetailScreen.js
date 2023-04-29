@@ -83,7 +83,7 @@ const DevicesDetailScreen = ({navigation, route}) => {
             tempBattery = 20;
           } else if (avgBatteryNumber >= 11.2 && avgBatteryNumber < 11.35) {
             tempBattery = 10;
-          } else if (avgBatteryNumber > 5 && avgBatteryNumber < 11.2) {
+          } else if (avgBatteryNumber < 11.2) {
             tempBattery = 0;
           }
           setAvgBattery(tempBattery);

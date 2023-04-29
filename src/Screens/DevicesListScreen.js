@@ -160,10 +160,9 @@ const DevicesListScreen = ({navigation, route}) => {
         //data={[]}
         renderItem={({item, index}) => DevicesListItem(item, index)}
         keyExtractor={(item, index) => index.toString()}
-        style={{marginBottom: 45}}
+        style={{marginBottom: 120}}
         contentContainerStyle={{
           flexGrow: 1,
-          height: '90%',
         }}
         ListEmptyComponent={
           !loading ? (
