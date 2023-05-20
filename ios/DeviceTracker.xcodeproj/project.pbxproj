@@ -14,6 +14,7 @@
 		24920E4815EA1E75F6490A2F /* libPods-DeviceTracker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F4B25D8577D8F559B32B61A6 /* libPods-DeviceTracker.a */; };
 		6C5242C0431665A6A39596C9 /* libPods-DeviceTracker-DeviceTrackerTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4B8DF5E1BEC74F67F652E15 /* libPods-DeviceTracker-DeviceTrackerTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		8A9BDCEE2A178C7B009B4C83 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 8A9BDCED2A178C7B009B4C83 /* main.jsbundle */; };
 		8AC35BDD2A04F3900020B6F8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8AC35BDC2A04F3900020B6F8 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
@@ -39,6 +40,7 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = DeviceTracker/main.m; sourceTree = "<group>"; };
 		33EDDE659E68A51438DBB714 /* Pods-DeviceTracker-DeviceTrackerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DeviceTracker-DeviceTrackerTests.debug.xcconfig"; path = "Target Support Files/Pods-DeviceTracker-DeviceTrackerTests/Pods-DeviceTracker-DeviceTrackerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = DeviceTracker/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		8A9BDCED2A178C7B009B4C83 /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		8AC35BDC2A04F3900020B6F8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A48E7594B5127408F5C2C66F /* Pods-DeviceTracker-DeviceTrackerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DeviceTracker-DeviceTrackerTests.release.xcconfig"; path = "Target Support Files/Pods-DeviceTracker-DeviceTrackerTests/Pods-DeviceTracker-DeviceTrackerTests.release.xcconfig"; sourceTree = "<group>"; };
 		A6926190739DB88C567C0B97 /* Pods-DeviceTracker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DeviceTracker.debug.xcconfig"; path = "Target Support Files/Pods-DeviceTracker/Pods-DeviceTracker.debug.xcconfig"; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				8A9BDCED2A178C7B009B4C83 /* main.jsbundle */,
 				13B07FAE1A68108700A75B9A /* DeviceTracker */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* DeviceTrackerTests */,
@@ -246,6 +249,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A9BDCEE2A178C7B009B4C83 /* main.jsbundle in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				8AC35BDD2A04F3900020B6F8 /* GoogleService-Info.plist in Resources */,
@@ -257,7 +261,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (
@@ -269,7 +273,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
+			shellScript = "set -e\n\nexport NODE_BINARY=/usr/local/opt/node/bin/node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		07823B9FB26AC4133B5981BD /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -346,7 +350,7 @@
 		};
 		4A984DF77A137624B600C522 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 8;
 			files = (
 			);
 			inputFileListPaths = (
@@ -356,10 +360,9 @@
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-DeviceTracker/Pods-DeviceTracker-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DeviceTracker/Pods-DeviceTracker-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 		7583EDDC5F99DDDEB3AE7C65 /* [CP-User] [RNFB] Core Configuration */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -503,10 +506,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8L5YGDMHZQ;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 8KD9FZPXM5;
 				ENABLE_BITCODE = NO;
-				EXCLUDED_ARCHS = arm64;
+				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = DeviceTracker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -520,6 +525,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.devicetracker.atronIndia;
 				PRODUCT_NAME = DeviceTracker;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Atroniks Dev";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -532,9 +539,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 8L5YGDMHZQ;
-				EXCLUDED_ARCHS = arm64;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 8KD9FZPXM5;
+				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = DeviceTracker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -546,8 +555,10 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.devicetracker;
+				PRODUCT_BUNDLE_IDENTIFIER = com.devicetracker.atronIndia;
 				PRODUCT_NAME = DeviceTracker;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Atroniks Dev";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -586,8 +597,7 @@
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				EXCLUDED_ARCHS = arm64;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
+				EXCLUDED_ARCHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -603,7 +613,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -659,8 +669,7 @@
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				EXCLUDED_ARCHS = arm64;
-				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
+				EXCLUDED_ARCHS = "";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -669,7 +678,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
