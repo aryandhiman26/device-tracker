@@ -16,10 +16,21 @@ import {Alert} from 'react-native';
 import NotificationController from './src/constants/NotificationController.android';
 import SplashScreen from './src/Screens/SplashScreen';
 import HistoryScreen from './src/Screens/HistoryScreen';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
 
 const Stack = createNativeStackNavigator();
 
+const showNotification = (id:string,title:string, message:string) => {
+  PushNotificationIOS.addNotificationRequest({
+ id:id, title : title , body:message
+})}
+
 const App = () => {
+
+  useEffect(()=>{
+    showNotification('1','ios notificaton','tes')
+  })
+  
   return (
     <PaperProvider>
       <NotificationController />

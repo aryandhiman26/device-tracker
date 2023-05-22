@@ -20,7 +20,7 @@
   UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
  center.delegate = self;
 
-  return YES;
+  // return YES;
 
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
   
