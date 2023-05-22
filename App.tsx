@@ -11,12 +11,14 @@ import ChangePasswordScreen from './src/Screens/ChangePasswordScreen';
 import AddNewDeviceScreen from './src/Screens/AddNewDeviceScreen';
 import {Provider as PaperProvider} from 'react-native-paper';
 import AddNewUserScreen from './src/Screens/AddNewUserScreen';
-import messaging from '@react-native-firebase/messaging';
+import messaging, { firebase } from '@react-native-firebase/messaging';
 import {Alert} from 'react-native';
 import NotificationController from './src/constants/NotificationController.android';
 import SplashScreen from './src/Screens/SplashScreen';
 import HistoryScreen from './src/Screens/HistoryScreen';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import PushNotificationHandler from './src/constants/Notification.ios';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,13 +29,29 @@ const showNotification = (id:string,title:string, message:string) => {
 
 const App = () => {
 
+  async function requestUserPermission() {
+    await messaging().requestPermission();
+  }
+ 
+  async function getToken() {
+    const fcmToken = await firebase.messaging().getToken();  
+    if (fcmToken) {
+        // user has a device token set it into store
+        await AsyncStorage.setItem('fcmToken',fcmToken);  
+      }
+      else{
+        console.log('Something went wrong.')
+      }
+  }
+
   useEffect(()=>{
-    showNotification('1','ios notificaton','tes')
-  })
+    requestUserPermission();
+    getToken()
+  },[])
   
   return (
     <PaperProvider>
-      <NotificationController />
+      {/* <PushNotificationHandler/> */}
       <NavigationContainer>
         <Stack.Navigator
           screenOptions={{
