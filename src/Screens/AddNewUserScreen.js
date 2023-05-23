@@ -39,7 +39,6 @@ const AddNewUserScreen = ({navigation, route}) => {
   ]);
 
   const handleSubmitButton = async () => {
-    console.log(value);
     if (emailId.length < 1) {
       ToastAndroid.show('User ID/ Email ID is required', ToastAndroid.SHORT);
       return;
@@ -98,13 +97,9 @@ const AddNewUserScreen = ({navigation, route}) => {
           `${BASE_URL}/user?userId=${userDetailsParsed?.userId}`,
           body,
         );
-        console.log(response);
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
 
       if (response?.data?.success) {
-        console.log(response?.data);
         ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
         navigation.navigate('Profile', {userInfo: userInfo});
       } else {

@@ -11,7 +11,7 @@ import ChangePasswordScreen from './src/Screens/ChangePasswordScreen';
 import AddNewDeviceScreen from './src/Screens/AddNewDeviceScreen';
 import {Provider as PaperProvider} from 'react-native-paper';
 import AddNewUserScreen from './src/Screens/AddNewUserScreen';
-import messaging, { firebase } from '@react-native-firebase/messaging';
+import messaging, {firebase} from '@react-native-firebase/messaging';
 import {Alert} from 'react-native';
 import NotificationController from './src/constants/NotificationController.android';
 import SplashScreen from './src/Screens/SplashScreen';
@@ -19,36 +19,38 @@ import HistoryScreen from './src/Screens/HistoryScreen';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import PushNotificationHandler from './src/constants/Notification.ios';
+import RegisterScreen from './src/Screens/RegisterScreen';
 
 const Stack = createNativeStackNavigator();
 
-const showNotification = (id:string,title:string, message:string) => {
+const showNotification = (id: string, title: string, message: string) => {
   PushNotificationIOS.addNotificationRequest({
- id:id, title : title , body:message
-})}
+    id: id,
+    title: title,
+    body: message,
+  });
+};
 
 const App = () => {
-
   async function requestUserPermission() {
     await messaging().requestPermission();
   }
- 
+
   async function getToken() {
-    const fcmToken = await firebase.messaging().getToken();  
+    const fcmToken = await firebase.messaging().getToken();
     if (fcmToken) {
-        // user has a device token set it into store
-        await AsyncStorage.setItem('fcmToken',fcmToken);  
-      }
-      else{
-        console.log('Something went wrong.')
-      }
+      // user has a device token set it into store
+      await AsyncStorage.setItem('fcmToken', fcmToken);
+    } else {
+      console.log('Something went wrong.');
+    }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     requestUserPermission();
-    getToken()
-  },[])
-  
+    getToken();
+  }, []);
+
   return (
     <PaperProvider>
       {/* <PushNotificationHandler/> */}
@@ -60,6 +62,7 @@ const App = () => {
           initialRouteName={'Splash'}>
           <Stack.Screen name="Splash" component={SplashScreen} />
           <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Register" component={RegisterScreen} />
           <Stack.Screen name="Dashboard" component={Dashboard} />
           <Stack.Screen name="DevicesList" component={DevicesListScreen} />
           <Stack.Screen name="DevicesDetail" component={DevicesDetailScreen} />
