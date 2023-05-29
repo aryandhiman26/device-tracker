@@ -16,6 +16,8 @@ import {COLORS} from '../Resources/Themes';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {BASE_URL} from '../constants/constants';
 import Loader from '../CommonComponents/Loader';
+import Toast from 'react-native-toast-message';
+
 
 const AddNewDeviceScreen = ({navigation, route}) => {
   const {userInfo} = route?.params;
@@ -27,19 +29,23 @@ const AddNewDeviceScreen = ({navigation, route}) => {
 
   const handleSubmitButton = async () => {
     if (userInfo?.typ === 'admin' && emailId.length < 1) {
-      ToastAndroid.show('User ID/ Email ID is required', ToastAndroid.SHORT);
+      // ToastAndroid.show('User ID/ Email ID is required', ToastAndroid.SHORT);
+      Toast.show({type:'error', text1:'User ID/ Email ID is required',autoHide:true, visibilityTime:3000,position:'bottom'});
       return;
     }
     if (deviceSerialNo.length < 1) {
-      ToastAndroid.show('Device serial no. is required', ToastAndroid.SHORT);
+      // ToastAndroid.show('Device serial no. is required', ToastAndroid.SHORT);
+      Toast.show({type:'error', text1:'Device serial no. is required',autoHide:true, visibilityTime:3000,position:'bottom'});
       return;
     }
     if (deviceName.length < 1) {
-      ToastAndroid.show('Device name is required', ToastAndroid.SHORT);
+      // ToastAndroid.show('Device name is required', ToastAndroid.SHORT);
+      Toast.show({type:'error', text1:'Device name is required',autoHide:true, visibilityTime:3000,position:'bottom'});
       return;
     }
     if (deviceMac.length < 1) {
-      ToastAndroid.show('Device MAC is required', ToastAndroid.SHORT);
+      // ToastAndroid.show('Device MAC is required', ToastAndroid.SHORT);
+      Toast.show({type:'error', text1:'Device MAC is required',autoHide:true, visibilityTime:3000,position:'bottom'});
       return;
     }
     try {
@@ -59,13 +65,16 @@ const AddNewDeviceScreen = ({navigation, route}) => {
       );
 
       if (response?.data?.success) {
-        ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
+        // ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
+        Toast.show({type:'error', text1:response?.data?.message,autoHide:true, visibilityTime:3000,position:'bottom'});
         navigation.navigate('Profile', {userInfo: userInfo});
       } else {
-        ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
+        // ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
+        Toast.show({type:'error', text1:response?.data?.message,autoHide:true, visibilityTime:3000,position:'bottom'});
       }
     } catch (error) {
-      ToastAndroid.show('Something went wrong', ToastAndroid.SHORT);
+      // ToastAndroid.show('Something went wrong', ToastAndroid.SHORT);
+      Toast.show({type:'error', text1:'Something went wrong', autoHide:true, visibilityTime:3000,position:'bottom'});
     } finally {
       setLoading(false);
     }
@@ -185,6 +194,7 @@ const AddNewDeviceScreen = ({navigation, route}) => {
           </View>
         </View>
       </View>
+      <Toast/>
       <Loader loading={loading} loaderColor={COLORS.appBlueColor} />
     </SafeAreaView>
   );

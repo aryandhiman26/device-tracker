@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
+  Button,
   FlatList,
   Image,
   ImageBackground,
@@ -23,6 +24,7 @@ import {ProgressBar} from 'react-native-paper';
 import Loader from '../CommonComponents/Loader';
 import NotificationController from '../constants/NotificationController.android';
 import messaging from '@react-native-firebase/messaging';
+import Toast from 'react-native-toast-message';
 
 const LoginScreen = ({navigation}) => {
   const [username, setUsername] = React.useState('');
@@ -47,11 +49,12 @@ const LoginScreen = ({navigation}) => {
 
   const handleSignInPress = async () => {
     if (username.length < 1) {
-      ToastAndroid.show('Username is required', ToastAndroid.SHORT);
+      Toast.show({type:'error', text1:'Username is required',autoHide:true, visibilityTime:3000,position:'bottom'});
       return;
     }
     if (password.length < 1) {
-      ToastAndroid.show('Password is required', ToastAndroid.SHORT);
+      // ToastAndroid.show('Password is required', ToastAndroid.SHORT);
+      Toast.show({type:'error', text1:'Password is required',autoHide:true, visibilityTime:3000,position:'bottom'});
       return;
     }
     const body = {
@@ -64,14 +67,16 @@ const LoginScreen = ({navigation}) => {
       const response = await axios.post(`${BASE_URL}/login`, body);
 
       if (response?.data?.success) {
-        ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
+        // ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
+        Toast.show({type:'error', text1:response?.data?.message,autoHide:true, visibilityTime:3000,position:'bottom'});
         try {
           await AsyncStorage.setItem(
             'user_id',
             String(response?.data?.data?.id),
           );
         } catch (e) {
-          ToastAndroid.show(e, ToastAndroid.SHORT);
+          // ToastAndroid.show(e, ToastAndroid.SHORT);
+          Toast.show({type:'error', text1:e,autoHide:true, visibilityTime:3000,position:'bottom'});
         }
         navigation.reset({
           index: 0,
@@ -80,10 +85,12 @@ const LoginScreen = ({navigation}) => {
           ],
         });
       } else {
-        ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
+        // ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
+        Toast.show({type:'error', text1:response?.data?.message,autoHide:true, visibilityTime:3000,position:'bottom'});
       }
     } catch (error) {
-      ToastAndroid.show('Something went wrong', ToastAndroid.SHORT);
+      // ToastAndroid.show('Something went wrong', ToastAndroid.SHORT);
+      Toast.show({type:'error', text1:'Something went wrong',autoHide:true, visibilityTime:3000,position:'bottom'});
     } finally {
       setLoading(false);
     }
@@ -226,6 +233,7 @@ const LoginScreen = ({navigation}) => {
           </Text>
         </View>
       </View>
+      <Toast/>
       <Loader loading={loading} loaderColor={'#fff'} />
     </SafeAreaView>
   );

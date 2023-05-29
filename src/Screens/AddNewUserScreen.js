@@ -18,6 +18,7 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import {BASE_URL} from '../constants/constants';
 import Loader from '../CommonComponents/Loader';
 import DropDownPicker from 'react-native-dropdown-picker';
+import Toast from 'react-native-toast-message';
 
 const AddNewUserScreen = ({navigation, route}) => {
   const {userInfo} = route?.params;
@@ -40,42 +41,51 @@ const AddNewUserScreen = ({navigation, route}) => {
 
   const handleSubmitButton = async () => {
     if (emailId.length < 1) {
-      ToastAndroid.show('User ID/ Email ID is required', ToastAndroid.SHORT);
+      // ToastAndroid.show('User ID/ Email ID is required', ToastAndroid.SHORT);
+      Toast.show({type:'error', text1:'User ID/ Email ID is required',autoHide:true, visibilityTime:3000,position:'bottom'});
       return;
     }
     if (password.length < 1) {
-      ToastAndroid.show('Password is required', ToastAndroid.SHORT);
+      // ToastAndroid.show('Password is required', ToastAndroid.SHORT);
+      Toast.show({type:'error', text1:'Password is required',autoHide:true, visibilityTime:3000,position:'bottom'});
       return;
     }
     if (confirmPassword.length < 1) {
-      ToastAndroid.show('Confirm password is required', ToastAndroid.SHORT);
+      // ToastAndroid.show('Confirm password is required', ToastAndroid.SHORT);
+      Toast.show({type:'error', text1:'Confirm password is required',autoHide:true, visibilityTime:3000,position:'bottom'});
       return;
     }
     if (confirmPassword != password) {
-      ToastAndroid.show(
-        "Password and Confirm passowrd does't matches.",
-        ToastAndroid.SHORT,
-      );
+      // ToastAndroid.show(
+      //   "Password and Confirm passowrd does't matches.",
+      //   ToastAndroid.SHORT,
+      // );
+      Toast.show({type:'error', text1:"Password and Confirm passowrd does't matches.",autoHide:true, visibilityTime:3000,position:'bottom'});
       return;
     }
     if (fullName.length < 1) {
-      ToastAndroid.show('Full name is required', ToastAndroid.SHORT);
+      // ToastAndroid.show('Full name is required', ToastAndroid.SHORT);
+      Toast.show({type:'error', text1:"Full name is required",autoHide:true, visibilityTime:3000,position:'bottom'});
       return;
     }
     if (mobileNumber.length < 1) {
-      ToastAndroid.show('Mobile number is required', ToastAndroid.SHORT);
+      // ToastAndroid.show('Mobile number is required', ToastAndroid.SHORT);
+      Toast.show({type:'error', text1:"Mobile number is required",autoHide:true, visibilityTime:3000,position:'bottom'});
       return;
     }
     if (state.length < 1) {
-      ToastAndroid.show('State is required', ToastAndroid.SHORT);
+      // ToastAndroid.show('State is required', ToastAndroid.SHORT);
+      Toast.show({type:'error', text1:"State is required",autoHide:true, visibilityTime:3000,position:'bottom'});
       return;
     }
     if (address.length < 1) {
-      ToastAndroid.show('Address is required', ToastAndroid.SHORT);
+      // ToastAndroid.show('Address is required', ToastAndroid.SHORT);
+      Toast.show({type:'error', text1:"Address is required",autoHide:true, visibilityTime:3000,position:'bottom'});
       return;
     }
     if (value.length < 1) {
-      ToastAndroid.show('Please select a privilege', ToastAndroid.SHORT);
+      // ToastAndroid.show('Please select a privilege', ToastAndroid.SHORT);
+      Toast.show({type:'error', text1:"Please select a privilege",autoHide:true, visibilityTime:3000,position:'bottom'});
       return;
     }
     try {
@@ -100,13 +110,16 @@ const AddNewUserScreen = ({navigation, route}) => {
       } catch (error) {}
 
       if (response?.data?.success) {
-        ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
+        // ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
+        Toast.show({type:'error', text1:response?.data?.message,autoHide:true, visibilityTime:3000,position:'bottom'});
         navigation.navigate('Profile', {userInfo: userInfo});
       } else {
-        ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
+        // ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
+        Toast.show({type:'error', text1:response?.data?.message,autoHide:true, visibilityTime:3000,position:'bottom'});
       }
     } catch (error) {
-      ToastAndroid.show('Something went wrong', ToastAndroid.SHORT);
+      // ToastAndroid.show('Something went wrong', ToastAndroid.SHORT);
+      Toast.show({type:'error', text1:'Something went wrong',autoHide:true, visibilityTime:3000,position:'bottom'});
     } finally {
       setLoading(false);
     }
@@ -233,6 +246,7 @@ const AddNewUserScreen = ({navigation, route}) => {
           </View>
         </View>
       </ScrollView>
+      <Toast/>
       <Loader loading={loading} loaderColor={COLORS.appBlueColor} />
     </SafeAreaView>
   );

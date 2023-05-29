@@ -20,6 +20,7 @@ import axios from 'axios';
 import {BASE_URL} from '../constants/constants';
 import Loader from '../CommonComponents/Loader';
 import {useIsFocused} from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 
 const Dashboard = ({navigation, route}) => {
   const {userId} = route?.params;
@@ -116,13 +117,16 @@ const Dashboard = ({navigation, route}) => {
               console.log(e);
             }
           } else {
-            ToastAndroid.show(response.data.message, ToastAndroid.SHORT);
+            // ToastAndroid.show(response.data.message, ToastAndroid.SHORT);
+            Toast.show({type:'error', text1:response?.data?.message,autoHide:true, visibilityTime:3000,position:'bottom'});
           }
         } catch (error) {
-          ToastAndroid.show('Something went wrong', ToastAndroid.SHORT);
+          // ToastAndroid.show('Something went wrong', ToastAndroid.SHORT);
+          Toast.show({type:'error', text1:'Something went wrong',autoHide:true, visibilityTime:3000,position:'bottom'});
         }
       } else {
-        ToastAndroid.show(responseProfile.data.message, ToastAndroid.SHORT);
+        // ToastAndroid.show(responseProfile.data.message, ToastAndroid.SHORT);
+        Toast.show({type:'error', text1:responseProfile?.data?.message,autoHide:true, visibilityTime:3000,position:'bottom'});
       }
     } catch (error) {
       console.log(error);
@@ -429,6 +433,7 @@ const Dashboard = ({navigation, route}) => {
           </View>
         </View> */}
       </View>
+      <Toast/>
       <Loader loading={loading} loaderColor={COLORS.appBlueColor} />
     </View>
   );

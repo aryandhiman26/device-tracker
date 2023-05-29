@@ -18,6 +18,7 @@ import {BASE_URL, removeDuplicateKeys} from '../constants/constants';
 import Loader from '../CommonComponents/Loader';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {useIsFocused} from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 
 const HistoryScreen = ({navigation, route}) => {
   const {deviceDetails} = route?.params;
@@ -65,11 +66,13 @@ const HistoryScreen = ({navigation, route}) => {
           const deviceHistoryData = response?.data?.data;
           setDeviceHistory(deviceHistoryData);
         } else {
-          ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
+          // ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
+          Toast.show({type:'error', text1:response?.data?.message,autoHide:true, visibilityTime:3000,position:'bottom'});
         }
       } catch (error) {
         console.log(error);
-        ToastAndroid.show('Something went wrong', ToastAndroid.SHORT);
+        // ToastAndroid.show('Something went wrong', ToastAndroid.SHORT);
+        Toast.show({type:'error', text1:'Something went wrong',autoHide:true, visibilityTime:3000,position:'bottom'});
       }
     } catch (error) {
       console.log(error);
@@ -192,6 +195,7 @@ const HistoryScreen = ({navigation, route}) => {
             );
           })}
       </ScrollView>
+      <Toast/>
       <Loader loading={loading} loaderColor={COLORS.appBlueColor} />
     </View>
   );

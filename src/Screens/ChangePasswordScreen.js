@@ -16,6 +16,7 @@ import {COLORS} from '../Resources/Themes';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {BASE_URL} from '../constants/constants';
 import Loader from '../CommonComponents/Loader';
+import Toast from 'react-native-toast-message';
 
 const ChangePasswordScreen = ({navigation, route}) => {
   const {userInfo} = route?.params;
@@ -34,18 +35,21 @@ const ChangePasswordScreen = ({navigation, route}) => {
 
   const handleChangePassword = async () => {
     if (currentPassword.length < 1) {
-      ToastAndroid.show('Current password is required', ToastAndroid.SHORT);
+      // ToastAndroid.show('Current password is required', ToastAndroid.SHORT);
+      Toast.show({type:'error', text1:'Current password is required',autoHide:true, visibilityTime:3000,position:'bottom'});
       return;
     }
     if (newPassword.length < 1) {
-      ToastAndroid.show('New password is required', ToastAndroid.SHORT);
+      // ToastAndroid.show('New password is required', ToastAndroid.SHORT);
+      Toast.show({type:'error', text1:'New password is required',autoHide:true, visibilityTime:3000,position:'bottom'});
       return;
     }
     if (confirmPassword != newPassword) {
-      ToastAndroid.show(
-        "New password and Confirm passowrd does't matches.",
-        ToastAndroid.SHORT,
-      );
+      // ToastAndroid.show(
+      //   "New password and Confirm passowrd does't matches.",
+      //   ToastAndroid.SHORT,
+      // );
+      Toast.show({type:'error', text1:"New password and Confirm passowrd does't matches.",autoHide:true, visibilityTime:3000,position:'bottom'});
       return;
     }
 
@@ -61,13 +65,16 @@ const ChangePasswordScreen = ({navigation, route}) => {
       const response = await axios.patch(`${BASE_URL}/change-password`, body);
 
       if (response?.data?.success) {
-        ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
+        // ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
+        Toast.show({type:'error', text1:response?.data?.message,autoHide:true, visibilityTime:3000,position:'bottom'});
         navigation.navigate('Profile', {userInfo: userInfo});
       } else {
-        ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
+        // ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
+        Toast.show({type:'error', text1:response?.data?.message,autoHide:true, visibilityTime:3000,position:'bottom'});
       }
     } catch (error) {
-      ToastAndroid.show('Something went wrong', ToastAndroid.SHORT);
+      // ToastAndroid.show('Something went wrong', ToastAndroid.SHORT);
+      Toast.show({type:'error', text1:'Something went wrong',autoHide:true, visibilityTime:3000,position:'bottom'});
     } finally {
       setLoading(false);
     }
@@ -172,6 +179,7 @@ const ChangePasswordScreen = ({navigation, route}) => {
           </View>
         </View>
       </View>
+      <Toast/>
       <Loader loading={loading} loaderColor={COLORS.appBlueColor} />
     </SafeAreaView>
   );
