@@ -91,10 +91,12 @@ const ProfileScreen = ({navigation, route}) => {
       console.log(body);
       const response = await axios.post(`${BASE_URL}/logout`, body);
       if (response?.data?.success) {
-        navigation.reset({
-          index: 0,
-          routes: [{name: 'Login'}],
-        });
+        setTimeout(() => {
+          navigation.reset({
+            index: 0,
+            routes: [{name: 'Login'}],
+          });
+        }, 100);
         setShowLogoutDialog(false);
         await AsyncStorage.clear();
         // ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);

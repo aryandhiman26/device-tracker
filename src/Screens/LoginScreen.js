@@ -64,7 +64,9 @@ const LoginScreen = ({navigation}) => {
     };
     try {
       setLoading(true);
+    
       const response = await axios.post(`${BASE_URL}/login`, body);
+      console.log(response?.data,'RESPO;;')
 
       if (response?.data?.success) {
         // ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
@@ -78,18 +80,23 @@ const LoginScreen = ({navigation}) => {
           // ToastAndroid.show(e, ToastAndroid.SHORT);
           Toast.show({type:'error', text1:e,autoHide:true, visibilityTime:3000,position:'bottom'});
         }
-        navigation.reset({
-          index: 0,
-          routes: [
-            {name: 'Dashboard', params: {userId: response?.data?.data?.id}},
-          ],
-        });
+        console.log('navigate',response?.data?.data?.id)
+        setTimeout(()=>{
+          navigation.reset({
+            index: 0,
+            routes: [
+              {name: 'Dashboard', params: {userId: response?.data?.data?.id}},
+            ],
+          });
+        },100)
+        
       } else {
         // ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
         Toast.show({type:'error', text1:response?.data?.message,autoHide:true, visibilityTime:3000,position:'bottom'});
       }
     } catch (error) {
       // ToastAndroid.show('Something went wrong', ToastAndroid.SHORT);
+      console.log(error,'CATCH::')
       Toast.show({type:'error', text1:'Something went wrong',autoHide:true, visibilityTime:3000,position:'bottom'});
     } finally {
       setLoading(false);
