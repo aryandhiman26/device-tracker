@@ -37,6 +37,8 @@ const App = () => {
   }
 
   async function getToken() {
+    // await messaging().registerDeviceForRemoteMessages();
+
     const fcmToken = await firebase.messaging().getToken();
     if (fcmToken) {
       // user has a device token set it into store

@@ -37,6 +37,7 @@ const LoginScreen = ({navigation}) => {
   }, []);
 
   const checkToken = async () => {
+    await messaging().registerDeviceForRemoteMessages();
     const fcmToken = await messaging().getToken();
     if (fcmToken) {
       setFcmDeviceToken(fcmToken);
@@ -49,12 +50,24 @@ const LoginScreen = ({navigation}) => {
 
   const handleSignInPress = async () => {
     if (username.length < 1) {
-      Toast.show({type:'error', text1:'Username is required',autoHide:true, visibilityTime:3000,position:'bottom'});
+      Toast.show({
+        type: 'error',
+        text1: 'Username is required',
+        autoHide: true,
+        visibilityTime: 3000,
+        position: 'bottom',
+      });
       return;
     }
     if (password.length < 1) {
       // ToastAndroid.show('Password is required', ToastAndroid.SHORT);
-      Toast.show({type:'error', text1:'Password is required',autoHide:true, visibilityTime:3000,position:'bottom'});
+      Toast.show({
+        type: 'error',
+        text1: 'Password is required',
+        autoHide: true,
+        visibilityTime: 3000,
+        position: 'bottom',
+      });
       return;
     }
     const body = {
@@ -64,13 +77,19 @@ const LoginScreen = ({navigation}) => {
     };
     try {
       setLoading(true);
-    
+
       const response = await axios.post(`${BASE_URL}/login`, body);
-      console.log(response?.data,'RESPO;;')
+      console.log(response?.data, 'RESPO;;');
 
       if (response?.data?.success) {
         // ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
-        Toast.show({type:'error', text1:response?.data?.message,autoHide:true, visibilityTime:3000,position:'bottom'});
+        Toast.show({
+          type: 'error',
+          text1: response?.data?.message,
+          autoHide: true,
+          visibilityTime: 3000,
+          position: 'bottom',
+        });
         try {
           await AsyncStorage.setItem(
             'user_id',
@@ -78,26 +97,43 @@ const LoginScreen = ({navigation}) => {
           );
         } catch (e) {
           // ToastAndroid.show(e, ToastAndroid.SHORT);
-          Toast.show({type:'error', text1:e,autoHide:true, visibilityTime:3000,position:'bottom'});
+          Toast.show({
+            type: 'error',
+            text1: e,
+            autoHide: true,
+            visibilityTime: 3000,
+            position: 'bottom',
+          });
         }
-        console.log('navigate',response?.data?.data?.id)
-        setTimeout(()=>{
+        console.log('navigate', response?.data?.data?.id);
+        setTimeout(() => {
           navigation.reset({
             index: 0,
             routes: [
               {name: 'Dashboard', params: {userId: response?.data?.data?.id}},
             ],
           });
-        },100)
-        
+        }, 100);
       } else {
         // ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
-        Toast.show({type:'error', text1:response?.data?.message,autoHide:true, visibilityTime:3000,position:'bottom'});
+        Toast.show({
+          type: 'error',
+          text1: response?.data?.message,
+          autoHide: true,
+          visibilityTime: 3000,
+          position: 'bottom',
+        });
       }
     } catch (error) {
       // ToastAndroid.show('Something went wrong', ToastAndroid.SHORT);
-      console.log(error,'CATCH::')
-      Toast.show({type:'error', text1:'Something went wrong',autoHide:true, visibilityTime:3000,position:'bottom'});
+      console.log(error, 'CATCH::');
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong',
+        autoHide: true,
+        visibilityTime: 3000,
+        position: 'bottom',
+      });
     } finally {
       setLoading(false);
     }
@@ -240,7 +276,7 @@ const LoginScreen = ({navigation}) => {
           </Text>
         </View>
       </View>
-      <Toast/>
+      <Toast />
       <Loader loading={loading} loaderColor={'#fff'} />
     </SafeAreaView>
   );

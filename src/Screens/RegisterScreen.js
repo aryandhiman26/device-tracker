@@ -17,6 +17,7 @@ import CommonHeader from '../CommonComponents/CommonHeader';
 import Loader from '../CommonComponents/Loader';
 import {COLORS} from '../Resources/Themes';
 import Toast from 'react-native-toast-message';
+import {BASE_URL} from '../constants/constants';
 
 const RegisterScreen = ({navigation, route}) => {
   const [serialNo, setSerialNo] = React.useState('');
@@ -36,59 +37,168 @@ const RegisterScreen = ({navigation, route}) => {
     {label: 'Super user', value: 'superuser'},
     {label: 'Admin', value: 'admin'},
   ]);
+  const [group, setGroup] = useState('');
 
-  const handleNextButton = () => {
-    setIsSerialNoDisabled(true);
+  const handleNextButton = async () => {
+    try {
+      setLoading(true);
+      const url = `${BASE_URL}/search-devices?deviceId=${serialNo}`;
+      const response = await axios.get(url);
+      console.log(response?.data);
+      if (response?.data?.success) {
+        setGroup(response?.data?.data?.grp);
+        setIsSerialNoDisabled(true);
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: response?.data?.message,
+          autoHide: true,
+          visibilityTime: 3000,
+          position: 'bottom',
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong',
+        autoHide: true,
+        visibilityTime: 3000,
+        position: 'bottom',
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleSubmitButton = () => {
+  const handleSubmitButton = async () => {
     if (emailId.length < 1) {
-      // ToastAndroid.show('User ID/ Email ID is required', ToastAndroid.SHORT);
-      Toast.show({type:'error', text1:'User ID/ Email ID is required',autoHide:true, visibilityTime:3000,position:'bottom'});
+      Toast.show({
+        type: 'error',
+        text1: 'User ID/ Email ID is required',
+        autoHide: true,
+        visibilityTime: 3000,
+        position: 'bottom',
+      });
       return;
     }
     if (password.length < 1) {
-      // ToastAndroid.show('Password is required', ToastAndroid.SHORT);
-      Toast.show({type:'error', text1:'Password is required',autoHide:true, visibilityTime:3000,position:'bottom'});
+      Toast.show({
+        type: 'error',
+        text1: 'Password is required',
+        autoHide: true,
+        visibilityTime: 3000,
+        position: 'bottom',
+      });
       return;
     }
     if (confirmPassword.length < 1) {
-      // ToastAndroid.show('Confirm password is required', ToastAndroid.SHORT);
-      Toast.show({type:'error', text1:'Confirm password is required',autoHide:true, visibilityTime:3000,position:'bottom'});
+      Toast.show({
+        type: 'error',
+        text1: 'Confirm password is required',
+        autoHide: true,
+        visibilityTime: 3000,
+        position: 'bottom',
+      });
       return;
     }
     if (confirmPassword != password) {
-      // ToastAndroid.show(
-      //   "Password and Confirm passowrd does't matches.",
-      //   ToastAndroid.SHORT,
-      // );
-      Toast.show({type:'error', text1:"Password and Confirm passowrd does't matches.",autoHide:true, visibilityTime:3000,position:'bottom'});
+      Toast.show({
+        type: 'error',
+        text1: "Password and Confirm passowrd does't matches.",
+        autoHide: true,
+        visibilityTime: 3000,
+        position: 'bottom',
+      });
       return;
     }
     if (fullName.length < 1) {
-      // ToastAndroid.show('Full name is required', ToastAndroid.SHORT);
-      Toast.show({type:'error', text1:'Full name is required',autoHide:true, visibilityTime:3000,position:'bottom'});
+      Toast.show({
+        type: 'error',
+        text1: 'Full name is required',
+        autoHide: true,
+        visibilityTime: 3000,
+        position: 'bottom',
+      });
       return;
     }
     if (mobileNumber.length < 1) {
-      // ToastAndroid.show('Mobile number is required', ToastAndroid.SHORT);
-      Toast.show({type:'error', text1:'Mobile number is required',autoHide:true, visibilityTime:3000,position:'bottom'});
+      Toast.show({
+        type: 'error',
+        text1: 'Mobile number is required',
+        autoHide: true,
+        visibilityTime: 3000,
+        position: 'bottom',
+      });
       return;
     }
     if (state.length < 1) {
-      // ToastAndroid.show('State is required', ToastAndroid.SHORT);
-      Toast.show({type:'error', text1:'State is required',autoHide:true, visibilityTime:3000,position:'bottom'});
+      Toast.show({
+        type: 'error',
+        text1: 'State is required',
+        autoHide: true,
+        visibilityTime: 3000,
+        position: 'bottom',
+      });
       return;
     }
     if (address.length < 1) {
-      // ToastAndroid.show('Address is required', ToastAndroid.SHORT);
-      Toast.show({type:'error', text1:'Address is required',autoHide:true, visibilityTime:3000,position:'bottom'});
+      Toast.show({
+        type: 'error',
+        text1: 'Address is required',
+        autoHide: true,
+        visibilityTime: 3000,
+        position: 'bottom',
+      });
       return;
     }
-    if (value.length < 1) {
-      // ToastAndroid.show('Please select a privilege', ToastAndroid.SHORT);
-      Toast.show({type:'error', text1:'Please select a privilege',autoHide:true, visibilityTime:3000,position:'bottom'});
-      return;
+
+    try {
+      setLoading(true);
+      const body = {
+        userId: emailId,
+        password: password,
+        name: fullName,
+        mobile: mobileNumber,
+        state: state,
+        address: address,
+        grp: group,
+      };
+      try {
+        const response = await axios.post(`${BASE_URL}/signup`, body);
+        if (response?.data?.success) {
+          Toast.show({
+            type: 'success',
+            text1: response?.data?.message,
+            autoHide: true,
+            visibilityTime: 3000,
+            position: 'bottom',
+          });
+          navigation.goBack();
+        } else {
+          Toast.show({
+            type: 'error',
+            text1: response?.data?.message,
+            autoHide: true,
+            visibilityTime: 3000,
+            position: 'bottom',
+          });
+        }
+      } catch (error) {
+      } finally {
+        setLoading(false);
+      }
+    } catch (error) {
+      // ToastAndroid.show('Something went wrong', ToastAndroid.SHORT);
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong',
+        autoHide: true,
+        visibilityTime: 3000,
+        position: 'bottom',
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -200,7 +310,7 @@ const RegisterScreen = ({navigation, route}) => {
                   multiline={true}
                   cursorColor={COLORS.DARK_GREY}
                 />
-                <Text style={styles.inputLabel}>Privilege</Text>
+                {/* <Text style={styles.inputLabel}>Privilege</Text>
                 <DropDownPicker
                   open={open}
                   value={value}
@@ -222,7 +332,7 @@ const RegisterScreen = ({navigation, route}) => {
                     paddingHorizontal: 10,
                     minHeight: 40,
                   }}
-                />
+                /> */}
                 <View style={styles.button}>
                   <TouchableOpacity
                     activeOpacity={0.3}
@@ -252,7 +362,7 @@ const RegisterScreen = ({navigation, route}) => {
           </View>
         </View>
       </ScrollView>
-      <Toast/>
+      <Toast />
       <Loader loading={loading} loaderColor={COLORS.appBlueColor} />
     </SafeAreaView>
   );

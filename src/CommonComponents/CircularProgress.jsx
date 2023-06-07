@@ -6,6 +6,7 @@ import {
   Text,
   View,
   StyleSheet,
+  Platform,
 } from 'react-native';
 import Svg, {G, Circle, Rect} from 'react-native-svg';
 import {COLORS} from '../Resources/Themes';
@@ -111,6 +112,7 @@ export default function CircularProgress({
             StyleSheet.absoluteFillObject,
             {color: textColor ?? color},
             styles.text,
+            {marginTop: Platform.OS === 'ios' && radius / 1.4},
           ]}
           multiline={true}
         />
@@ -128,5 +130,5 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   container: {alignItems: 'center'},
-  label: {paddingTop: 10, fontSize: 18, fontWeight: 600},
+  label: {paddingTop: 10, fontSize: 18, fontWeight: '600'},
 });

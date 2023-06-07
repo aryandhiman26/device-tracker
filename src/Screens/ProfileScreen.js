@@ -52,11 +52,23 @@ const ProfileScreen = ({navigation, route}) => {
         setCount(devicelistData?.length);
       } else {
         // ToastAndroid.show(response.data.message, ToastAndroid.SHORT);
-        Toast.show({type:'error', text1:response?.data?.message,autoHide:true, visibilityTime:3000,position:'bottom'});
+        Toast.show({
+          type: 'error',
+          text1: response?.data?.message,
+          autoHide: true,
+          visibilityTime: 3000,
+          position: 'bottom',
+        });
       }
     } catch (error) {
       // ToastAndroid.show('Something went wrong', ToastAndroid.SHORT);
-      Toast.show({type:'error', text1:'Something went wrong',autoHide:true, visibilityTime:3000,position:'bottom'});
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong',
+        autoHide: true,
+        visibilityTime: 3000,
+        position: 'bottom',
+      });
     } finally {
       setLoading(false);
     }
@@ -83,6 +95,7 @@ const ProfileScreen = ({navigation, route}) => {
     setLoading(true);
     try {
       console.log('uiokj');
+      await messaging().registerDeviceForRemoteMessages();
       const fcmToken = await messaging().getToken();
       const body = {
         userId: userInfo?.id,
@@ -100,14 +113,32 @@ const ProfileScreen = ({navigation, route}) => {
         setShowLogoutDialog(false);
         await AsyncStorage.clear();
         // ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
-        Toast.show({type:'error', text1:response?.data?.message,autoHide:true, visibilityTime:3000,position:'bottom'});
+        Toast.show({
+          type: 'error',
+          text1: response?.data?.message,
+          autoHide: true,
+          visibilityTime: 3000,
+          position: 'bottom',
+        });
       } else {
         // ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
-        Toast.show({type:'error', text1:response?.data?.message,autoHide:true, visibilityTime:3000,position:'bottom'});
+        Toast.show({
+          type: 'error',
+          text1: response?.data?.message,
+          autoHide: true,
+          visibilityTime: 3000,
+          position: 'bottom',
+        });
       }
     } catch (error) {
       // ToastAndroid.show('Something went wrong', ToastAndroid.SHORT);
-      Toast.show({type:'error', text1:'Something went wrong',autoHide:true, visibilityTime:3000,position:'bottom'});
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong',
+        autoHide: true,
+        visibilityTime: 3000,
+        position: 'bottom',
+      });
     } finally {
       setLoading(false);
     }
@@ -226,7 +257,7 @@ const ProfileScreen = ({navigation, route}) => {
           <Image source={Assets.rightArrow} style={{height: 20, width: 20}} />
         </TouchableOpacity>
       </View>
-      <Toast/>
+      <Toast />
       <Loader loading={loading} loaderColor={COLORS.appBlueColor} />
       <AlertDialog
         dialogTitle={'Logout'}

@@ -3,6 +3,7 @@ import {
   FlatList,
   Image,
   ImageBackground,
+  SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -40,7 +41,7 @@ const BatteryLevelDetailsScreen = ({navigation, route}) => {
     );
   };
   return (
-    <>
+    <SafeAreaView style={{flex: 1}}>
       <CommonHeader
         navigation={navigation}
         title={'Battery Details'}
@@ -58,7 +59,7 @@ const BatteryLevelDetailsScreen = ({navigation, route}) => {
         style={{marginBottom: 25, margin: 2}}
         numColumns={2}
       />
-    </>
+    </SafeAreaView>
   );
 };
 

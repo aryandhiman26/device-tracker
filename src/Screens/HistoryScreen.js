@@ -3,6 +3,7 @@ import {
   FlatList,
   Image,
   ImageBackground,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -66,13 +67,23 @@ const HistoryScreen = ({navigation, route}) => {
           const deviceHistoryData = response?.data?.data;
           setDeviceHistory(deviceHistoryData);
         } else {
-          // ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
-          Toast.show({type:'error', text1:response?.data?.message,autoHide:true, visibilityTime:3000,position:'bottom'});
+          Toast.show({
+            type: 'error',
+            text1: response?.data?.message,
+            autoHide: true,
+            visibilityTime: 3000,
+            position: 'bottom',
+          });
         }
       } catch (error) {
         console.log(error);
-        // ToastAndroid.show('Something went wrong', ToastAndroid.SHORT);
-        Toast.show({type:'error', text1:'Something went wrong',autoHide:true, visibilityTime:3000,position:'bottom'});
+        Toast.show({
+          type: 'error',
+          text1: 'Something went wrong',
+          autoHide: true,
+          visibilityTime: 3000,
+          position: 'bottom',
+        });
       }
     } catch (error) {
       console.log(error);
@@ -82,7 +93,7 @@ const HistoryScreen = ({navigation, route}) => {
   };
 
   return (
-    <View>
+    <SafeAreaView>
       <CommonHeader
         navigation={navigation}
         title={'History'}
@@ -195,9 +206,9 @@ const HistoryScreen = ({navigation, route}) => {
             );
           })}
       </ScrollView>
-      <Toast/>
+      <Toast />
       <Loader loading={loading} loaderColor={COLORS.appBlueColor} />
-    </View>
+    </SafeAreaView>
   );
 };
 
