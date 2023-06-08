@@ -4,6 +4,7 @@ import {
   Button,
   Image,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -16,6 +17,7 @@ import {COLORS} from '../Resources/Themes';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {BASE_URL} from '../constants/constants';
 import Loader from '../CommonComponents/Loader';
+import Toast from 'react-native-toast-message';
 
 const AddNewDeviceScreen = ({navigation, route}) => {
   const {userInfo} = route?.params;
@@ -24,22 +26,51 @@ const AddNewDeviceScreen = ({navigation, route}) => {
   const [deviceName, setDeviceName] = React.useState('');
   const [deviceMac, setDeviceMac] = React.useState('');
   const [loading, setLoading] = useState(false);
+  const [isSerialNoDisabled, setIsSerialNoDisabled] = useState(false);
 
   const handleSubmitButton = async () => {
     if (userInfo?.typ === 'admin' && emailId.length < 1) {
-      ToastAndroid.show('User ID/ Email ID is required', ToastAndroid.SHORT);
+      // ToastAndroid.show('User ID/ Email ID is required', ToastAndroid.SHORT);
+      Toast.show({
+        type: 'error',
+        text1: 'User ID/ Email ID is required',
+        autoHide: true,
+        visibilityTime: 3000,
+        position: 'bottom',
+      });
       return;
     }
     if (deviceSerialNo.length < 1) {
-      ToastAndroid.show('Device serial no. is required', ToastAndroid.SHORT);
+      // ToastAndroid.show('Device serial no. is required', ToastAndroid.SHORT);
+      Toast.show({
+        type: 'error',
+        text1: 'Device serial no. is required',
+        autoHide: true,
+        visibilityTime: 3000,
+        position: 'bottom',
+      });
       return;
     }
     if (deviceName.length < 1) {
-      ToastAndroid.show('Device name is required', ToastAndroid.SHORT);
+      // ToastAndroid.show('Device name is required', ToastAndroid.SHORT);
+      Toast.show({
+        type: 'error',
+        text1: 'Device name is required',
+        autoHide: true,
+        visibilityTime: 3000,
+        position: 'bottom',
+      });
       return;
     }
     if (deviceMac.length < 1) {
-      ToastAndroid.show('Device MAC is required', ToastAndroid.SHORT);
+      // ToastAndroid.show('Device MAC is required', ToastAndroid.SHORT);
+      Toast.show({
+        type: 'error',
+        text1: 'Device MAC is required',
+        autoHide: true,
+        visibilityTime: 3000,
+        position: 'bottom',
+      });
       return;
     }
     try {
@@ -59,13 +90,66 @@ const AddNewDeviceScreen = ({navigation, route}) => {
       );
 
       if (response?.data?.success) {
-        ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
+        // ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
+        Toast.show({
+          type: 'error',
+          text1: response?.data?.message,
+          autoHide: true,
+          visibilityTime: 3000,
+          position: 'bottom',
+        });
         navigation.navigate('Profile', {userInfo: userInfo});
       } else {
-        ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
+        // ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
+        Toast.show({
+          type: 'error',
+          text1: response?.data?.message,
+          autoHide: true,
+          visibilityTime: 3000,
+          position: 'bottom',
+        });
       }
     } catch (error) {
-      ToastAndroid.show('Something went wrong', ToastAndroid.SHORT);
+      // ToastAndroid.show('Something went wrong', ToastAndroid.SHORT);
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong',
+        autoHide: true,
+        visibilityTime: 3000,
+        position: 'bottom',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleNextButton = async () => {
+    try {
+      setLoading(true);
+      const url = `${BASE_URL}/search-devices?deviceId=${deviceSerialNo}`;
+      const response = await axios.get(url);
+      console.log(response?.data);
+      if (response?.data?.success) {
+        // setGroup(response?.data?.data?.grp);
+        setIsSerialNoDisabled(true);
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: response?.data?.message,
+          autoHide: true,
+          visibilityTime: 3000,
+          position: 'bottom',
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong',
+        autoHide: true,
+        visibilityTime: 3000,
+        position: 'bottom',
+      });
     } finally {
       setLoading(false);
     }
@@ -78,10 +162,12 @@ const AddNewDeviceScreen = ({navigation, route}) => {
         title={'Add New Device'}
         isBackButton={true}
       />
-      <View style={styles.innerContainer}>
-        <View style={styles.signInForm}>
-          {userInfo?.typ === 'admin' && (
-            <>
+      <ScrollView>
+        <View style={styles.innerContainer}>
+          <View style={styles.signInForm}>
+            <View
+              style={{opacity: isSerialNoDisabled ? 0.4 : 1}}
+              pointerEvents={isSerialNoDisabled ? 'none' : 'auto'}>
               <Text
                 style={{
                   color: COLORS.appBlueColor,
@@ -89,102 +175,134 @@ const AddNewDeviceScreen = ({navigation, route}) => {
                   marginBottom: 8,
                   marginLeft: 2,
                   fontWeight: '600',
-                  marginTop: 10,
+                  marginTop: 5,
                 }}>
-                User ID/ Email ID
+                Device Serial No.
               </Text>
               <TextInput
                 style={styles.input}
-                onChangeText={setEmailId}
-                value={emailId}
-                placeholder="Enter User id/ Email id"
+                onChangeText={setDeviceSerialNo}
+                value={deviceSerialNo}
+                placeholder="Enter device serial no."
                 cursorColor={COLORS.DARK_GREY}
               />
-            </>
-          )}
+              <View style={styles.button}>
+                <TouchableOpacity
+                  activeOpacity={0.3}
+                  onPress={handleNextButton}
+                  style={{
+                    flexDirection: 'row',
+                    backgroundColor: COLORS.appBlueColor,
+                    padding: 7,
+                    width: '30%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderRadius: 5,
+                    marginBottom: 20,
+                  }}>
+                  <Text
+                    style={{
+                      color: '#fff',
+                      fontWeight: '600',
+                      fontSize: 14,
+                    }}>
+                    Next
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+            {isSerialNoDisabled && (
+              <>
+                {userInfo?.typ === 'admin' && (
+                  <>
+                    <Text
+                      style={{
+                        color: COLORS.appBlueColor,
+                        fontSize: 14,
+                        marginBottom: 8,
+                        marginLeft: 2,
+                        fontWeight: '600',
+                        marginTop: 10,
+                      }}>
+                      User ID/ Email ID
+                    </Text>
+                    <TextInput
+                      style={styles.input}
+                      onChangeText={setEmailId}
+                      value={emailId}
+                      placeholder="Enter User id/ Email id"
+                      cursorColor={COLORS.DARK_GREY}
+                    />
+                  </>
+                )}
 
-          <Text
-            style={{
-              color: COLORS.appBlueColor,
-              fontSize: 14,
-              marginBottom: 8,
-              marginLeft: 2,
-              fontWeight: '600',
-              marginTop: 25,
-            }}>
-            Device Serial No.
-          </Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={setDeviceSerialNo}
-            value={deviceSerialNo}
-            placeholder="Enter device serial no."
-            //placeholderTextColor={COLORS.LIGHT_GREY}
-            cursorColor={COLORS.DARK_GREY}
-          />
-          <Text
-            style={{
-              color: COLORS.appBlueColor,
-              fontSize: 14,
-              marginBottom: 8,
-              marginLeft: 2,
-              fontWeight: '600',
-              marginTop: 25,
-            }}>
-            Device MAC
-          </Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={setDeviceMac}
-            value={deviceMac}
-            placeholder="Enter device mac"
-            //placeholderTextColor={COLORS.LIGHT_GREY}
-            cursorColor={COLORS.DARK_GREY}
-          />
-          <Text
-            style={{
-              color: COLORS.appBlueColor,
-              fontSize: 14,
-              marginBottom: 8,
-              marginLeft: 2,
-              fontWeight: '600',
-              marginTop: 25,
-            }}>
-            Device name
-          </Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={setDeviceName}
-            value={deviceName}
-            placeholder="Enter device name"
-            //placeholderTextColor={COLORS.LIGHT_GREY}
-            cursorColor={COLORS.DARK_GREY}
-          />
-          <View style={styles.button}>
-            <TouchableOpacity
-              activeOpacity={0.3}
-              onPress={handleSubmitButton}
-              style={{
-                flexDirection: 'row',
-                backgroundColor: COLORS.appBlueColor,
-                padding: 10,
-                width: '50%',
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: 8,
-              }}>
-              <Text
-                style={{
-                  color: '#fff',
-                  fontWeight: '600',
-                  fontSize: 16,
-                }}>
-                SUBMIT
-              </Text>
-            </TouchableOpacity>
+                <Text
+                  style={{
+                    color: COLORS.appBlueColor,
+                    fontSize: 14,
+                    marginBottom: 8,
+                    marginLeft: 2,
+                    fontWeight: '600',
+                    marginTop: 25,
+                  }}>
+                  Device MAC
+                </Text>
+                <TextInput
+                  style={styles.input}
+                  onChangeText={setDeviceMac}
+                  value={deviceMac}
+                  placeholder="Enter device mac"
+                  //placeholderTextColor={COLORS.LIGHT_GREY}
+                  cursorColor={COLORS.DARK_GREY}
+                />
+                <Text
+                  style={{
+                    color: COLORS.appBlueColor,
+                    fontSize: 14,
+                    marginBottom: 8,
+                    marginLeft: 2,
+                    fontWeight: '600',
+                    marginTop: 25,
+                  }}>
+                  Device name
+                </Text>
+                <TextInput
+                  style={styles.input}
+                  onChangeText={setDeviceName}
+                  value={deviceName}
+                  placeholder="Enter device name"
+                  //placeholderTextColor={COLORS.LIGHT_GREY}
+                  cursorColor={COLORS.DARK_GREY}
+                />
+                <View style={styles.button}>
+                  <TouchableOpacity
+                    activeOpacity={0.3}
+                    onPress={handleSubmitButton}
+                    style={{
+                      flexDirection: 'row',
+                      backgroundColor: COLORS.appBlueColor,
+                      padding: 10,
+                      width: '50%',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      borderRadius: 8,
+                    }}>
+                    <Text
+                      style={{
+                        color: '#fff',
+                        fontWeight: '600',
+                        fontSize: 16,
+                      }}>
+                      SUBMIT
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </>
+            )}
           </View>
         </View>
-      </View>
+      </ScrollView>
+      <Toast />
       <Loader loading={loading} loaderColor={COLORS.appBlueColor} />
     </SafeAreaView>
   );

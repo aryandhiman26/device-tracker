@@ -3,6 +3,7 @@ import {
   FlatList,
   Image,
   ImageBackground,
+  SafeAreaView,
   StyleSheet,
   Text,
   ToastAndroid,
@@ -18,6 +19,7 @@ import axios from 'axios';
 import {BASE_URL} from '../constants/constants';
 import Loader from '../CommonComponents/Loader';
 import {useIsFocused} from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 
 const DevicesDetailScreen = ({navigation, route}) => {
   const {device_id} = route.params;
@@ -88,10 +90,24 @@ const DevicesDetailScreen = ({navigation, route}) => {
           }
           setAvgBattery(tempBattery);
         } else {
-          ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
+          // ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
+          Toast.show({
+            type: 'error',
+            text1: response?.data?.message,
+            autoHide: true,
+            visibilityTime: 3000,
+            position: 'bottom',
+          });
         }
       } catch (error) {
-        ToastAndroid.show('Something went wrong', ToastAndroid.SHORT);
+        // ToastAndroid.show('Something went wrong', ToastAndroid.SHORT);
+        Toast.show({
+          type: 'error',
+          text1: 'Something went wrong',
+          autoHide: true,
+          visibilityTime: 3000,
+          position: 'bottom',
+        });
       }
     } catch (error) {
       console.log(error);
@@ -140,7 +156,7 @@ const DevicesDetailScreen = ({navigation, route}) => {
     );
   };
   return (
-    <>
+    <SafeAreaView style={{flex: 1}}>
       <CommonHeader
         navigation={navigation}
         title={'Device Details'}
@@ -307,8 +323,9 @@ const DevicesDetailScreen = ({navigation, route}) => {
           </View>
         </View>
       </View>
+      <Toast />
       <Loader loading={loading} loaderColor={COLORS.appBlueColor} />
-    </>
+    </SafeAreaView>
   );
 };
 

@@ -77,6 +77,7 @@ const SplashScreen = ({navigation, route}) => {
   }, []);
 
   const checkToken = async () => {
+    await messaging().registerDeviceForRemoteMessages();
     const fcmToken = await messaging().getToken();
     if (fcmToken) {
       console.log(fcmToken);
@@ -89,10 +90,12 @@ const SplashScreen = ({navigation, route}) => {
     try {
       setLoading(true);
       if (!userId) {
-        navigation.reset({
-          index: 0,
-          routes: [{name: 'Login'}],
-        });
+        setTimeout(() => {
+          navigation.reset({
+            index: 0,
+            routes: [{name: 'Login'}],
+          });
+        }, 10);
       } else {
         if (notificationData) {
           console.log(notificationData?.data?.device_id);
@@ -105,10 +108,12 @@ const SplashScreen = ({navigation, route}) => {
       }
     } catch (e) {
       console.log(e);
-      navigation.reset({
-        index: 0,
-        routes: [{name: 'Login'}],
-      });
+      setTimeout(() => {
+        navigation.reset({
+          index: 0,
+          routes: [{name: 'Login'}],
+        });
+      }, 10);
     } finally {
       setLoading(false);
     }

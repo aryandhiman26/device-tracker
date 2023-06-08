@@ -16,6 +16,7 @@ import {Alert} from 'react-native';
 import NotificationController from './src/constants/NotificationController.android';
 import SplashScreen from './src/Screens/SplashScreen';
 import HistoryScreen from './src/Screens/HistoryScreen';
+import RegisterScreen from './src/Screens/RegisterScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -46,6 +47,7 @@ const App = () => {
           <Stack.Screen name="AddNewDevice" component={AddNewDeviceScreen} />
           <Stack.Screen name="AddNewUser" component={AddNewUserScreen} />
           <Stack.Screen name="History" component={HistoryScreen} />
+          <Stack.Screen name="Register" component={RegisterScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>

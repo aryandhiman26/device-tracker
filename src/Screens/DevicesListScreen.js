@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {
   FlatList,
   Image,
+  SafeAreaView,
   StyleSheet,
   Text,
   TextInput,
@@ -17,6 +18,7 @@ import axios from 'axios';
 import {BASE_URL} from '../constants/constants';
 import Loader from '../CommonComponents/Loader';
 import {ErrorPlaceholder} from '../CommonComponents/ErrorPlaceholder';
+import Toast from 'react-native-toast-message';
 
 const DevicesListScreen = ({navigation, route}) => {
   const {type} = route?.params;
@@ -45,10 +47,24 @@ const DevicesListScreen = ({navigation, route}) => {
             setFilteredDataSource(devicelistData);
             setMasterDataSource(devicelistData);
           } else {
-            ToastAndroid.show(response.data.message, ToastAndroid.SHORT);
+            // ToastAndroid.show(response.data.message, ToastAndroid.SHORT);
+            Toast.show({
+              type: 'error',
+              text1: response?.data?.message,
+              autoHide: true,
+              visibilityTime: 3000,
+              position: 'bottom',
+            });
           }
         } catch (error) {
-          ToastAndroid.show('Something went wrong', ToastAndroid.SHORT);
+          // ToastAndroid.show('Something went wrong', ToastAndroid.SHORT);
+          Toast.show({
+            type: 'error',
+            text1: 'Something went wrong',
+            autoHide: true,
+            visibilityTime: 3000,
+            position: 'bottom',
+          });
         }
       } else {
         try {
@@ -62,10 +78,24 @@ const DevicesListScreen = ({navigation, route}) => {
             setFilteredDataSource(devicelistData);
             setMasterDataSource(devicelistData);
           } else {
-            ToastAndroid.show(response.data.message, ToastAndroid.SHORT);
+            // ToastAndroid.show(response.data.message, ToastAndroid.SHORT);
+            Toast.show({
+              type: 'error',
+              text1: response?.data?.message,
+              autoHide: true,
+              visibilityTime: 3000,
+              position: 'bottom',
+            });
           }
         } catch (error) {
-          ToastAndroid.show('Something went wrong', ToastAndroid.SHORT);
+          // ToastAndroid.show('Something went wrong', ToastAndroid.SHORT);
+          Toast.show({
+            type: 'error',
+            text1: 'Something went wrong',
+            autoHide: true,
+            visibilityTime: 3000,
+            position: 'bottom',
+          });
         }
       }
     } catch (error) {
@@ -142,7 +172,7 @@ const DevicesListScreen = ({navigation, route}) => {
     );
   };
   return (
-    <View>
+    <SafeAreaView>
       <CommonHeader
         navigation={navigation}
         title={`Devices (${filteredDataSource.length})`}
@@ -157,7 +187,6 @@ const DevicesListScreen = ({navigation, route}) => {
       />
       <FlatList
         data={filteredDataSource}
-        //data={[]}
         renderItem={({item, index}) => DevicesListItem(item, index)}
         keyExtractor={(item, index) => index.toString()}
         style={{marginBottom: 120}}
@@ -170,8 +199,9 @@ const DevicesListScreen = ({navigation, route}) => {
           ) : null
         }
       />
+      <Toast />
       <Loader loading={loading} loaderColor={COLORS.appBlueColor} />
-    </View>
+    </SafeAreaView>
   );
 };
 
