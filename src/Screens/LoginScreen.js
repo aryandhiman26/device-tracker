@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, {useEffect, useState} from 'react';
 import {
   ActivityIndicator,
+  Button,
   FlatList,
   Image,
   ImageBackground,
@@ -23,6 +24,7 @@ import {ProgressBar} from 'react-native-paper';
 import Loader from '../CommonComponents/Loader';
 import NotificationController from '../constants/NotificationController.android';
 import messaging from '@react-native-firebase/messaging';
+import Toast from 'react-native-toast-message';
 
 const LoginScreen = ({navigation}) => {
   const [username, setUsername] = React.useState('');
@@ -35,19 +37,37 @@ const LoginScreen = ({navigation}) => {
   }, []);
 
   const checkToken = async () => {
+    await messaging().registerDeviceForRemoteMessages();
     const fcmToken = await messaging().getToken();
     if (fcmToken) {
       setFcmDeviceToken(fcmToken);
     }
   };
 
+  const handleRegisterPress = () => {
+    navigation.navigate('Register');
+  };
+
   const handleSignInPress = async () => {
     if (username.length < 1) {
-      ToastAndroid.show('Username is required', ToastAndroid.SHORT);
+      Toast.show({
+        type: 'error',
+        text1: 'Username is required',
+        autoHide: true,
+        visibilityTime: 3000,
+        position: 'bottom',
+      });
       return;
     }
     if (password.length < 1) {
-      ToastAndroid.show('Password is required', ToastAndroid.SHORT);
+      // ToastAndroid.show('Password is required', ToastAndroid.SHORT);
+      Toast.show({
+        type: 'error',
+        text1: 'Password is required',
+        autoHide: true,
+        visibilityTime: 3000,
+        position: 'bottom',
+      });
       return;
     }
     const body = {
@@ -57,31 +77,63 @@ const LoginScreen = ({navigation}) => {
     };
     try {
       setLoading(true);
+
       const response = await axios.post(`${BASE_URL}/login`, body);
-      console.log(body);
+      console.log(response?.data, 'RESPO;;');
 
       if (response?.data?.success) {
-        ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
+        // ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
+        Toast.show({
+          type: 'error',
+          text1: response?.data?.message,
+          autoHide: true,
+          visibilityTime: 3000,
+          position: 'bottom',
+        });
         try {
           await AsyncStorage.setItem(
             'user_id',
             String(response?.data?.data?.id),
           );
         } catch (e) {
-          ToastAndroid.show(e, ToastAndroid.SHORT);
-          console.log(e);
+          // ToastAndroid.show(e, ToastAndroid.SHORT);
+          Toast.show({
+            type: 'error',
+            text1: e,
+            autoHide: true,
+            visibilityTime: 3000,
+            position: 'bottom',
+          });
         }
-        navigation.reset({
-          index: 0,
-          routes: [
-            {name: 'Dashboard', params: {userId: response?.data?.data?.id}},
-          ],
-        });
+        console.log('navigate', response?.data?.data?.id);
+        setTimeout(() => {
+          navigation.reset({
+            index: 0,
+            routes: [
+              {name: 'Dashboard', params: {userId: response?.data?.data?.id}},
+            ],
+          });
+        }, 100);
       } else {
-        ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
+        // ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
+        Toast.show({
+          type: 'error',
+          text1: response?.data?.message,
+          autoHide: true,
+          visibilityTime: 3000,
+          position: 'bottom',
+        });
       }
     } catch (error) {
-      ToastAndroid.show('Something went wrong', ToastAndroid.SHORT);
+      // ToastAndroid.show('Something went wrong', ToastAndroid.SHORT);
+      console.log(error, 'CATCH::');
+      Toast.show({
+        type: 'error',
+        text1: 'Something went wrong',
+        autoHide: true,
+        visibilityTime: 3000,
+        position: 'bottom',
+      });
     } finally {
       setLoading(false);
     }
@@ -153,15 +205,6 @@ const LoginScreen = ({navigation}) => {
             />
           </View>
 
-          {/* <TouchableOpacity onPress={handleForgotPassword}>
-            <Typography
-              text={SIGN_IN_SCREEN.forgot_password_button}
-              textStyle={{
-                ...TextStyles.bodyTextYellow,
-                ...styles.forgot_password,
-              }}
-            />
-          </TouchableOpacity> */}
           <View style={styles.button}>
             <TouchableOpacity
               activeOpacity={0.3}
@@ -170,11 +213,10 @@ const LoginScreen = ({navigation}) => {
                 flexDirection: 'row',
                 backgroundColor: '#fff',
                 padding: 10,
-                width: '50%',
+                width: '100%',
                 justifyContent: 'center',
                 alignItems: 'center',
                 borderRadius: 8,
-                marginTop: 20,
               }}>
               <Image
                 source={require('../assets/sign_in_icon.png')}
@@ -191,22 +233,36 @@ const LoginScreen = ({navigation}) => {
                 Sign In
               </Text>
             </TouchableOpacity>
-            {/* <Button
-              icon={require('../assets/sign_in_icon.png')}
-              mode={'contained'}
-              style={{}}
-
-              //   buttonStyle={ButtonStyles.primaryContainedButtonStyle}
-              //   labelStyle={ButtonStyles.primaryLableStyle}
-              // handleOnPress={handleSignInPress}
-            /> */}
-            {/* <Button
-              icon={createAccountButton}
-              variant={theme.button.outlined}
-              buttonStyle={ButtonStyles.whiteOutlinedButtonStyle}
-              labelStyle={ButtonStyles.whiteLableStyle}
-              handleOnPress={handleCreateAccountPress}
-            /> */}
+          </View>
+          <View style={styles.button2}>
+            <TouchableOpacity
+              activeOpacity={0.3}
+              onPress={handleRegisterPress}
+              style={{
+                flexDirection: 'row',
+                borderColor: '#fff',
+                borderWidth: 1,
+                padding: 10,
+                width: '100%',
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: 8,
+              }}>
+              <Image
+                source={require('../assets/register.jpeg')}
+                resizeMode="contain"
+                style={{height: 20, width: 20, marginRight: 5}}
+              />
+              <Text
+                style={{
+                  color: COLORS.white,
+                  fontWeight: '600',
+                  fontSize: 16,
+                  marginLeft: 5,
+                }}>
+                Register
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
         <View
@@ -220,14 +276,7 @@ const LoginScreen = ({navigation}) => {
           </Text>
         </View>
       </View>
-      {/* <Loader loading={loading} loaderColor={theme.palette.SECONDRY} />
-      <AlertDialog
-        showDialogBox={showAlertDialog}
-        setShowDialogBox={setShowAlertDialog}
-        dialogBoxType={dialogBoxType}
-        dialogMessageText={dialogMessageText}
-        screenType={'sign_in'}
-      /> */}
+      <Toast />
       <Loader loading={loading} loaderColor={'#fff'} />
     </SafeAreaView>
   );
@@ -305,7 +354,12 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: 'center',
-    marginTop: 50,
+    marginTop: 40,
+    width: '100%',
+  },
+  button2: {
+    alignItems: 'center',
+    marginTop: 20,
     width: '100%',
   },
   textSign: {
