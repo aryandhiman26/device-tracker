@@ -253,6 +253,7 @@ const DevicesDetailScreen = ({navigation, route}) => {
               label="Battery Level"
               percentage={Number(avgBattery)}
               value={avgBattery}
+              onPress={navigateToBatteryDetails}
             />
           </TouchableOpacity>
         </View>
