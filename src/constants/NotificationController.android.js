@@ -2,6 +2,7 @@ import React, {useEffect} from 'react';
 import {Alert} from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import PushNotification from 'react-native-push-notification';
+import {useAuth} from './useAuth';
 
 PushNotification.createChannel(
   {
@@ -19,15 +20,23 @@ PushNotification.createChannel(
 );
 
 const NotificationController = props => {
+  const {setNotificationData} = useAuth();
   useEffect(() => {
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       PushNotification.localNotification({
         message: remoteMessage.notification.body,
         title: remoteMessage.notification.title,
-        bigPictureUrl: remoteMessage.notification.android.imageUrl,
-        smallIcon: remoteMessage.notification.android.imageUrl,
-        channelId: true,
+        largeIcon: '',
+        smallIcon: 'ic_notification_icon',
+        color: '#13989B',
+        channelId: 'channel-id',
         vibrate: true,
+        // actions: ['Yes', 'No'], // buttons can be given in notifications
+      });
+      PushNotification.configure({
+        onNotification: function (notification) {
+          setNotificationData(notification);
+        },
       });
     });
     return unsubscribe;

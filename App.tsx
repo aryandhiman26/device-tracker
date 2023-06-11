@@ -1,4 +1,4 @@
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
 import Dashboard from './src/Screens/Dashboard';
@@ -17,40 +17,46 @@ import NotificationController from './src/constants/NotificationController.andro
 import SplashScreen from './src/Screens/SplashScreen';
 import HistoryScreen from './src/Screens/HistoryScreen';
 import RegisterScreen from './src/Screens/RegisterScreen';
+import {AuthProvider} from './src/constants/AuthContext';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
-    <PaperProvider>
-      <NotificationController />
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerShown: false,
-          }}
-          initialRouteName={'Splash'}>
-          <Stack.Screen name="Splash" component={SplashScreen} />
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Dashboard" component={Dashboard} />
-          <Stack.Screen name="DevicesList" component={DevicesListScreen} />
-          <Stack.Screen name="DevicesDetail" component={DevicesDetailScreen} />
-          <Stack.Screen
-            name="BatteryLevelDetails"
-            component={BatteryLevelDetailsScreen}
-          />
-          <Stack.Screen name="Profile" component={ProfileScreen} />
-          <Stack.Screen
-            name="ChangePassword"
-            component={ChangePasswordScreen}
-          />
-          <Stack.Screen name="AddNewDevice" component={AddNewDeviceScreen} />
-          <Stack.Screen name="AddNewUser" component={AddNewUserScreen} />
-          <Stack.Screen name="History" component={HistoryScreen} />
-          <Stack.Screen name="Register" component={RegisterScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </PaperProvider>
+    <AuthProvider>
+      <PaperProvider>
+        <NotificationController />
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerShown: false,
+            }}
+            initialRouteName={'Splash'}>
+            <Stack.Screen name="Splash" component={SplashScreen} />
+            <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Dashboard" component={Dashboard} />
+            <Stack.Screen name="DevicesList" component={DevicesListScreen} />
+            <Stack.Screen
+              name="DevicesDetail"
+              component={DevicesDetailScreen}
+            />
+            <Stack.Screen
+              name="BatteryLevelDetails"
+              component={BatteryLevelDetailsScreen}
+            />
+            <Stack.Screen name="Profile" component={ProfileScreen} />
+            <Stack.Screen
+              name="ChangePassword"
+              component={ChangePasswordScreen}
+            />
+            <Stack.Screen name="AddNewDevice" component={AddNewDeviceScreen} />
+            <Stack.Screen name="AddNewUser" component={AddNewUserScreen} />
+            <Stack.Screen name="History" component={HistoryScreen} />
+            <Stack.Screen name="Register" component={RegisterScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </PaperProvider>
+    </AuthProvider>
   );
 };
 

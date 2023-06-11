@@ -24,6 +24,7 @@ export default function CircularProgress({
   max = 100,
   value = 0,
   label = '',
+  onPress,
 }) {
   const animated = React.useRef(new Animated.Value(0)).current;
   const circleRef = React.useRef();
@@ -105,6 +106,7 @@ export default function CircularProgress({
         </Svg>
         <AnimatedTextInput
           ref={inputRef}
+          onPressIn={onPress}
           underlineColorAndroid="transparent"
           editable={false}
           defaultValue={'0'}
@@ -112,7 +114,7 @@ export default function CircularProgress({
             StyleSheet.absoluteFillObject,
             {color: textColor ?? color},
             styles.text,
-            {marginTop: Platform.OS === 'ios' && radius / 1.4},
+            {marginTop: Platform.OS === 'ios' ? radius / 1.4 : 0},
           ]}
           multiline={true}
         />

@@ -22,7 +22,7 @@ import {useIsFocused} from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 
 const DevicesDetailScreen = ({navigation, route}) => {
-  const {device_id} = route.params;
+  const {device_id} = route?.params;
   console.log(device_id, 'thiss one');
   const ref = useRef(null);
   const [deviceData, setDeviceData] = useState();
@@ -42,8 +42,8 @@ const DevicesDetailScreen = ({navigation, route}) => {
       }, 10000);
 
       return () => {
-        if (ref.current) {
-          clearInterval(ref.current);
+        if (ref?.current) {
+          clearInterval(ref?.current);
         }
       };
     }
@@ -61,34 +61,38 @@ const DevicesDetailScreen = ({navigation, route}) => {
           const deviceDetailData = response?.data?.data[0];
           setDeviceData(deviceDetailData);
 
-          let tempBattery = 0;
-          const avgBatteryNumber = Number(
-            deviceDetailData?.batval1?.toFixed(2),
-          );
-          if (avgBatteryNumber >= 12.7) {
-            tempBattery = 100;
-          } else if (avgBatteryNumber >= 12.5 && avgBatteryNumber < 12.7) {
-            tempBattery = 90;
-          } else if (avgBatteryNumber >= 12.3 && avgBatteryNumber < 12.5) {
-            tempBattery = 80;
-          } else if (avgBatteryNumber >= 12.1 && avgBatteryNumber < 12.3) {
-            tempBattery = 70;
-          } else if (avgBatteryNumber >= 11.95 && avgBatteryNumber < 12.1) {
-            tempBattery = 60;
-          } else if (avgBatteryNumber >= 11.8 && avgBatteryNumber < 11.95) {
-            tempBattery = 50;
-          } else if (avgBatteryNumber >= 11.65 && avgBatteryNumber < 11.8) {
-            tempBattery = 40;
-          } else if (avgBatteryNumber >= 11.5 && avgBatteryNumber < 11.65) {
-            tempBattery = 30;
-          } else if (avgBatteryNumber >= 11.35 && avgBatteryNumber < 11.5) {
-            tempBattery = 20;
-          } else if (avgBatteryNumber >= 11.2 && avgBatteryNumber < 11.35) {
-            tempBattery = 10;
-          } else if (avgBatteryNumber < 11.2) {
-            tempBattery = 0;
-          }
-          setAvgBattery(tempBattery);
+          // let tempBattery = 0;
+          // const avgBatteryNumber = Number(
+          //   deviceDetailData?.batval1?.toFixed(2),
+          // );
+          // if (avgBatteryNumber >= 12.7) {
+          //   tempBattery = 100;
+          // } else if (avgBatteryNumber >= 12.5 && avgBatteryNumber < 12.7) {
+          //   tempBattery = 90;
+          // } else if (avgBatteryNumber >= 12.3 && avgBatteryNumber < 12.5) {
+          //   tempBattery = 80;
+          // } else if (avgBatteryNumber >= 12.1 && avgBatteryNumber < 12.3) {
+          //   tempBattery = 70;
+          // } else if (avgBatteryNumber >= 11.95 && avgBatteryNumber < 12.1) {
+          //   tempBattery = 60;
+          // } else if (avgBatteryNumber >= 11.8 && avgBatteryNumber < 11.95) {
+          //   tempBattery = 50;
+          // } else if (avgBatteryNumber >= 11.65 && avgBatteryNumber < 11.8) {
+          //   tempBattery = 40;
+          // } else if (avgBatteryNumber >= 11.5 && avgBatteryNumber < 11.65) {
+          //   tempBattery = 30;
+          // } else if (avgBatteryNumber >= 11.35 && avgBatteryNumber < 11.5) {
+          //   tempBattery = 20;
+          // } else if (avgBatteryNumber >= 11.2 && avgBatteryNumber < 11.35) {
+          //   tempBattery = 10;
+          // } else if (avgBatteryNumber < 11.2) {
+          //   tempBattery = 0;
+          // }
+          // setAvgBattery(tempBattery);
+          let str = deviceDetailData?.bat;
+          str = str.substring(0, str.length - 1);
+
+          setAvgBattery(str);
         } else {
           // ToastAndroid.show(response?.data?.message, ToastAndroid.SHORT);
           Toast.show({
@@ -253,6 +257,7 @@ const DevicesDetailScreen = ({navigation, route}) => {
               label="Battery Level"
               percentage={Number(avgBattery)}
               value={avgBattery}
+              onPress={navigateToBatteryDetails}
             />
           </TouchableOpacity>
         </View>
