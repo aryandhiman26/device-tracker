@@ -112,7 +112,7 @@ export default function CircularProgress({
             StyleSheet.absoluteFillObject,
             {color: textColor ?? color},
             styles.text,
-            {marginTop: Platform.OS === 'ios' && radius / 1.6},
+            {marginTop: Platform.OS === 'ios' ? radius / 1.4 : 0},
           ]}
           multiline={true}
         />

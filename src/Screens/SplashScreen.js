@@ -19,12 +19,14 @@ import axios from 'axios';
 import Loader from '../CommonComponents/Loader';
 import {COLORS} from '../Resources/Themes';
 import {useIsFocused} from '@react-navigation/native';
+import {useAuth} from '../constants/useAuth';
 
 const heightMain = Dimensions.get('screen').height;
 const widthMain = Dimensions.get('screen').width;
 
 const SplashScreen = ({navigation, route}) => {
-  const [notificationData, setNotificationData] = useState(null);
+  const {notificationData, setNotificationData} = useAuth();
+
   const width = new Animated.Value(widthMain / 4);
   const height = new Animated.Value(heightMain / 4);
   const SITE_BANNER_VERTICAL_IMAGE = require('../assets/main_logo_2.png');
@@ -59,11 +61,18 @@ const SplashScreen = ({navigation, route}) => {
     messaging().onNotificationOpenedApp(async remoteMessage => {
       console.log('message handled in opennedd', remoteMessage);
       setNotificationData(remoteMessage);
-      //setInitialRoute(remoteMessage?.data?.screenname);
     });
+    messaging()
+      .getInitialNotification()
+      .then(remoteMessage => {
+        if (remoteMessage) {
+          console.log(remoteMessage?.data);
+          // Notification caused app to open from quit state
+          setNotificationData(remoteMessage);
+        }
+      });
     const unsubscribe = messaging().onMessage(async remoteMessage => {
-      console.log('messaging', remoteMessage); //my_custom_key3
-      // setNotificationData(remoteMessage);
+      console.log('messaging', remoteMessage);
     });
 
     return unsubscribe;
@@ -97,7 +106,8 @@ const SplashScreen = ({navigation, route}) => {
           });
         }, 10);
       } else {
-        if (notificationData) {
+        console.log(notificationData, 'hiii');
+        if (notificationData?.data?.device_id) {
           console.log(notificationData?.data?.device_id);
           navigation.navigate('DevicesDetail', {
             device_id: notificationData?.data?.device_id,
@@ -122,7 +132,7 @@ const SplashScreen = ({navigation, route}) => {
   useEffect(() => {
     setTimeout(() => {
       checkLoginPossible();
-    }, 3000);
+    }, 1000);
   }, [notificationData, isFocused]);
 
   return (
