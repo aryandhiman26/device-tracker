@@ -130,7 +130,7 @@ const AddNewDeviceScreen = ({navigation, route}) => {
       const response = await axios.get(url);
       console.log(response?.data);
       if (response?.data?.success) {
-        // setGroup(response?.data?.data?.grp);
+        setDeviceMac(response?.data?.data?.mac);
         setIsSerialNoDisabled(true);
       } else {
         Toast.show({
@@ -235,26 +235,27 @@ const AddNewDeviceScreen = ({navigation, route}) => {
                     />
                   </>
                 )}
-
-                <Text
-                  style={{
-                    color: COLORS.appBlueColor,
-                    fontSize: 14,
-                    marginBottom: 8,
-                    marginLeft: 2,
-                    fontWeight: '600',
-                    marginTop: 25,
-                  }}>
-                  Device MAC
-                </Text>
-                <TextInput
-                  style={styles.input}
-                  onChangeText={setDeviceMac}
-                  value={deviceMac}
-                  placeholder="Enter device mac"
-                  //placeholderTextColor={COLORS.LIGHT_GREY}
-                  cursorColor={COLORS.DARK_GREY}
-                />
+                <View style={{opacity: 0.4}} pointerEvents={'none'}>
+                  <Text
+                    style={{
+                      color: COLORS.appBlueColor,
+                      fontSize: 14,
+                      marginBottom: 8,
+                      marginLeft: 2,
+                      fontWeight: '600',
+                      marginTop: 25,
+                    }}>
+                    Device MAC
+                  </Text>
+                  <TextInput
+                    style={styles.input}
+                    onChangeText={setDeviceMac}
+                    value={deviceMac}
+                    placeholder="Enter device mac"
+                    //placeholderTextColor={COLORS.LIGHT_GREY}
+                    cursorColor={COLORS.DARK_GREY}
+                  />
+                </View>
                 <Text
                   style={{
                     color: COLORS.appBlueColor,
